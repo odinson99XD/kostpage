@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KostCheck 🧳</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Gunakan Tailwind resmi -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- (Opsional) Konfigurasi tambahan -->
+  <!-- <script>
+    tailwind.config = {
+      theme: {
+        extend: {}
+      }
+    }
+  </script> -->
+
+  <!-- Tambahan styling -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-6">
   <div class="max-w-xl mx-auto">
     <h1 class="text-3xl font-bold mb-6">KostCheck 🧳</h1>
     <div class="flex gap-2 mb-4">
-      <input id="itemInput" type="text" placeholder="Tambah barang..." class="flex-1 p-2 rounded bg-gray-800 border border-gray-600">
+      <input id="itemInput" type="text" placeholder="Tambah barang..." class="flex-1 p-2 rounded bg-gray-800 border border-gray-600" />
       <button onclick="addItem()" class="bg-blue-600 px-4 py-2 rounded">Tambah</button>
       <button onclick="resetItems()" class="bg-yellow-600 px-4 py-2 rounded">Reset</button>
     </div>

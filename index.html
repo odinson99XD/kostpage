@@ -1,120 +1,220 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KostCheck</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KostCheck - Daftar Barang Anak Kost</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
-
     body {
-      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      padding: 20px;
     }
 
-    .card {
-      @apply p-4 bg-gray-800 rounded-lg shadow-lg text-white w-40 h-32 flex items-center justify-center text-center transition-transform duration-700;
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
+    h1 {
+      text-align: center;
+      color: #00ffc3;
+      margin-bottom: 40px;
     }
 
-    .card.show {
-      opacity: 1;
-      pointer-events: auto;
+    details {
+      background-color: #1e1e1e;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      padding: 10px 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
 
-    .glow {
-      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    summary {
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      color: #00ffd5;
     }
 
-    .miniature {
-      width: 60px;
-      height: 60px;
-      background-color: #ccc;
-      border-radius: 10px;
+    ul {
+      margin: 12px 0 0 20px;
+      padding-left: 20px;
     }
 
-    .character {
-      background-color: #4ade80;
+    li {
+      margin-bottom: 6px;
     }
 
-    .house {
-      background-color: #60a5fa;
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5em;
+      }
+
+      summary {
+        font-size: 1em;
+      }
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-  <h1 class="text-5xl mb-4 glow">Mari Kita CHECK</h1>
+<body>
+  <h1>KostCheck 🏡</h1>
 
-  <!-- Miniatur -->
-  <div class="flex items-center gap-12 mb-6 relative z-10">
-    <div id="character" class="miniature character"></div>
-    <div id="house" class="miniature house"></div>
-  </div>
+  <details>
+    <summary>Kebutuhan Tempat Tidur</summary>
+    <ul>
+      <li>Kasur lipat / springbed (jika kost belum menyediakan)</li>
+      <li>Sprei (2–3 set)</li>
+      <li>Sarung bantal & guling (2–3 set)</li>
+      <li>Bantal & guling</li>
+      <li>Selimut / bed cover</li>
+      <li>Tikar / alas lantai</li>
+      <li>Gorden (jika kost tidak ada / tidak menutup rapat)</li>
+      <li>Kelambu (opsional, terutama jika banyak nyamuk)</li>
+    </ul>
+  </details>
 
-  <!-- Tombol CHECK -->
-  <button onclick="startAnimation()" class="bg-cyan-500 hover:bg-cyan-700 text-white px-6 py-3 rounded-md text-lg transition z-10 relative left-[-60px]">CHECK</button>
+  <details>
+    <summary>Kebutuhan Kamar Mandi</summary>
+    <ul>
+      <li>Handuk (2–3 pcs)</li>
+      <li>Sabun mandi & tempat sabun</li>
+      <li>Shampo & conditioner</li>
+      <li>Pasta gigi + sikat gigi + tempat sikat</li>
+      <li>Sabun muka / skincare</li>
+      <li>Ember & gayung</li>
+      <li>Sikat WC + pembersih toilet</li>
+      <li>Keset (2 pcs, luar dan dalam kamar mandi)</li>
+      <li>Rak gantung / organizer kamar mandi</li>
+      <li>Cermin kecil (jika kost tidak ada)</li>
+    </ul>
+  </details>
 
-  <!-- Kartu Kategori -->
-  <div id="cardContainer" class="w-full h-full absolute top-0 left-0 pointer-events-none">
-    <!-- Kartu akan ditambahkan lewat JS -->
-  </div>
+  <details>
+    <summary>Kebutuhan Pakaian</summary>
+    <ul>
+      <li>Baju harian</li>
+      <li>Baju tidur</li>
+      <li>Pakaian kuliah / kerja</li>
+      <li>Jaket / sweater (2–3 pcs)</li>
+      <li>Jas hujan</li>
+      <li>Pakaian dalam secukupnya (7–10 pasang)</li>
+      <li>Kaos kaki & daleman</li>
+      <li>Sepatu kuliah / sekolah</li>
+      <li>Sandal / sepatu santai</li>
+      <li>Rak sepatu kecil (jika tidak disediakan)</li>
+      <li>Topi / masker</li>
+      <li>Setrika (jika belum disediakan)</li>
+      <li>Jemuran lipat</li>
+      <li>Hanger / gantungan baju (10–20 pcs)</li>
+    </ul>
+  </details>
 
-  <script>
-    const categories = [
-      { name: "Kebutuhan Tempat Tidur", items: ["Kasur lipat / springbed", "Sprei (2–3 set)", "Sarung bantal & guling (2–3 set)", "Bantal & guling", "Selimut / bed cover"] },
-      { name: "Kebutuhan Kamar Mandi", items: ["Handuk (2–3 pcs)", "Sabun mandi & tempat sabun", "Shampo & conditioner", "Pasta gigi + sikat gigi", "Sabun muka / skincare", "Ember & gayung"] },
-      { name: "Kebutuhan Pakaian", items: ["Baju harian", "Baju tidur", "Pakaian kuliah / kerja", "Jaket / sweater", "Pakaian dalam", "Kaos kaki", "Sepatu", "Sandal", "Hanger / gantungan baju"] },
-      { name: "Peralatan Makan dan Minum", items: ["Piring & mangkok", "Gelas & mug", "Sendok & garpu", "Termos / botol minum", "Sabun cuci piring + spons"] },
-      { name: "Alat Kebersihan & Kebutuhan Kamar", items: ["Sapu & pengki", "Pel & ember", "Tempat sampah", "Pengharum ruangan", "Kotak P3K"] },
-      { name: "Kebutuhan Dapur Mini", items: ["Rice cooker mini", "Panci kecil", "Kompor portable", "Bumbu instan", "Snack & mie instan"] },
-      { name: "Perlengkapan Belajar & Elektronik", items: ["Laptop + charger", "HP + charger + powerbank", "Kabel roll", "Lampu belajar", "Buku catatan & alat tulis", "Tas kuliah"] },
-      { name: "Dokumen & Barang Penting", items: ["KTP & fotokopinya", "KTM / Kartu pelajar", "Kartu BPJS / asuransi", "Buku rekening & ATM"] },
-      { name: "Kesehatan & Darurat", items: ["Obat-obatan pribadi", "Obat flu & sakit kepala", "Hansaplast", "kapas", "betadine", "Masker", "Termometer", "Vitamin"] },
-      { name: "Lain-lain (Opsional tapi berguna)", items: ["Payung lipat", "Kipas angin mini", "Senter", "Peralatan ibadah", "Koper / tas besar", "Kantong laundry"] }
-    ];
+  <details>
+    <summary>Peralatan Makan dan Minum</summary>
+    <ul>
+      <li>Piring & mangkok (2–3 pcs)</li>
+      <li>Gelas & mug (2–3 pcs)</li>
+      <li>Sendok, garpu, pisau kecil</li>
+      <li>Termos kecil / botol minum isi ulang</li>
+    </ul>
+  </details>
 
-    const cardContainer = document.getElementById('cardContainer');
+  <details>
+    <summary>Alat Kebersihan & Kebutuhan Kamar</summary>
+    <ul>
+      <li>Detergen + softener pakaian</li>
+      <li>Pewangi badan & deodoran</li>
+      <li>Pembersih lantai / karbol</li>
+      <li>Tempat sabun cair / refill-an</li>
+      <li>Sapu & pengki</li>
+      <li>Pel & ember</li>
+      <li>Kain pel & lap serbaguna</li>
+      <li>Tempat sampah + plastik cadangan</li>
+      <li>Kamper / pengharum ruangan</li>
+    </ul>
+  </details>
 
-    function startAnimation() {
-      // Animasi karakter masuk ke rumah
-      const char = document.getElementById('character');
-      const house = document.getElementById('house');
-      char.style.transition = 'transform 1.5s ease';
-      char.style.transform = 'translateX(150px)';
+  <details>
+    <summary>Kebutuhan Dapur Mini</summary>
+    <ul>
+      <li>Rice cooker mini / magic com</li>
+      <li>Panci kecil & wajan anti lengket (jika boleh masak)</li>
+      <li>Kompor portable + gas kaleng (jika diperbolehkan)</li>
+      <li>Talenan kecil</li>
+      <li>Saringan / penyaring</li>
+      <li>Tupperware (untuk menyimpan makanan)</li>
+      <li>Sabun cuci piring + spons</li>
+      <li>Lap makan / serbet</li>
+      <li>Meja lipat makan (jika tidak disediakan)</li>
+    </ul>
+  </details>
 
-      // Tampilkan kartu setelah 2 detik
-      setTimeout(() => {
-        showCards();
-      }, 1600);
-    }
+  <details>
+    <summary>Perlengkapan Belajar & Elektronik</summary>
+    <ul>
+      <li>Laptop + charger</li>
+      <li>HP + charger + powerbank</li>
+      <li>Kabel roll / colokan tambahan</li>
+      <li>Lampu belajar</li>
+      <li>Flashdisk / harddisk eksternal</li>
+      <li>Pulpen, pensil, stabilo</li>
+      <li>Buku catatan & binder</li>
+      <li>Sticky notes, penghapus, penggaris</li>
+      <li>Tas kuliah / ransel</li>
+      <li>Meja belajar (jika kost belum ada)</li>
+      <li>Kursi nyaman (jika perlu tambahan)</li>
+      <li>Headset / earphone</li>
+      <li>Alarm jam / jam dinding</li>
+    </ul>
+  </details>
 
-    function showCards() {
-      cardContainer.innerHTML = ''; // Kosongkan dulu
+  <details>
+    <summary>Dokumen & Barang Penting</summary>
+    <ul>
+      <li>KTP & fotokopinya</li>
+      <li>KTM / Kartu pelajar</li>
+      <li>Kartu BPJS / asuransi kesehatan</li>
+      <li>Buku rekening & ATM</li>
+      <li>Print hasil daftar ulang / administrasi</li>
+      <li>Foto formal (2x3, 3x4) beberapa lembar</li>
+      <li>Map plastik atau map dokumen</li>
+      <li>Alat tulis cadangan</li>
+      <li>Buku catatan keuangan</li>
+      <li>ID card / kartu akses kost</li>
+    </ul>
+  </details>
 
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const radius = 200;
+  <details>
+    <summary>Kesehatan & Darurat</summary>
+    <ul>
+      <li>Obat-obatan pribadi</li>
+      <li>Obat flu, sakit kepala, diare</li>
+      <li>Minyak angin, balsem</li>
+      <li>Hansaplast, kapas, betadine</li>
+      <li>Masker medis / kain</li>
+      <li>Termometer</li>
+      <li>Vitamin / suplemen</li>
+      <li>Obat alergi / asma (jika punya)</li>
+    </ul>
+  </details>
 
-      categories.forEach((cat, i) => {
-        const angle = (2 * Math.PI / categories.length) * i;
-        const x = centerX + radius * Math.cos(angle) - 80;
-        const y = centerY + radius * Math.sin(angle) - 60;
+  <details>
+    <summary>Lain-lain (Opsional tapi berguna)</summary>
+    <ul>
+      <li>Payung lipat</li>
+      <li>Kipas angin mini / portabel</li>
+      <li>Senter / emergency lamp</li>
+      <li>Al-Qur'an / buku rohani</li>
+      <li>Buku bacaan ringan</li>
+      <li>Koper / tas besar</li>
+      <li>Kantong laundry</li>
+      <li>Laundry net / jaring cuci</li>
+      <li>Tali jemuran</li>
+      <li>Tempat serbaguna bawah kasur</li>
+      <li>Stoples makanan</li>
+      <li>Kalender / planner dinding</li>
+      <li>Peralatan ibadah (sajadah, mukena, sarung, dll.)</li>
+      <li>Tempat kunci / gantungan dinding</li>
+    </ul>
+  </details>
 
-        const card = document.createElement('div');
-        card.className = 'card show';
-        card.style.left = `${x}px`;
-        card.style.top = `${y}px`;
-        card.innerText = cat.name;
-
-        card.onclick = () => {
-          alert(`Daftar barang: \n- ${cat.items.join("\n- ")}`);
-        };
-
-        cardContainer.appendChild(card);
-      });
-    }
-  </script>
 </body>
 </html>

@@ -1,4 +1,10 @@
-/* style.css */
+:root {
+  --bg: #1a1a2e;
+  --accent: #00d4ff;
+  --accent-alt: #ff007a;
+  --text: #ffffff;
+}
 body {
-  font-family: 'Arial', sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PackSavvy - Moving Checklist</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            font-family: 'Bebas Neue', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(45deg, #00d4ff, #ff007a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+            margin-bottom: 20px;
+        }
+
+        #check-button {
+            position: absolute;
+            left: 20%;
+            top: 60%;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #00d4ff, #ff007a);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        #check-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 1);
+        }
+
+        #human {
+            position: absolute;
+            left: calc(50% - 100px);
+            top: 50%;
+            width: 50px;
+            height: 80px;
+            background: url('https://via.placeholder.com/50x80/ffffff/000000?text=Human') no-repeat center;
+            background-size: contain;
+            transition: transform 2s ease-in-out;
+        }
+
+        #house {
+            position: absolute;
+            left: calc(50% + 50px);
+            top: 50%;
+            width: 100px;
+            height: 100px;
+            background: url('https://via.placeholder.com/100x100/ffffff/000000?text=House') no-repeat center;
+            background-size: contain;
+        }
+
+        .category-card {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            backdrop-filter: blur(5px);
+            --x: 0;
+            --y: 0;
+            animation: scatter 0.8s ease-out forwards;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+            border-color: #ff007a;
+        }
+
+        @keyframes scatter {
+            0% { transform: scale(0) translate(0, 0); opacity: 0; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(1) translate(var(--x), var(--y)); }
+        }
+
+        #checklist-container {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            accent-color: #00d4ff;
+        }
+
+        #back-button, #reset-button {
+            position: fixed;
+            top: 20px;
+            padding: 10px 20px;
+            background: #ff007a;
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 0, 122, 0.5);
+        }
+
+        #back-button {
+            left: 20px;
+        }
+
+        #reset-button {
+            left: 100px;
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #00d4ff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        #toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            #check-button {
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px 30px;
+                font-size: 1.2rem;
+            }
+
+            #human {
+                left: calc(50% - 80px);
+                width: 40px;
+                height: 60px;
+            }
+
+            #house {
+                left: calc(50% + 40px);
+                width: 80px;
+                height: 80px;
+            }
+
+            .category-card {
+                width: 100px;
+                height: 70px;
+                font-size: 0.8rem;
+            }
+
+            @keyframes scatter {
+                0% { transform: scale(0) translate(0, 0); opacity: 0; }
+                50% { transform: scale(1.2); opacity: 1; }
+                100% { transform: scale(1) translate(var(--x), var(--y)); }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <h1>Mari Kita Check</h1>
+        <div id="human"></div>
+        <div id="house"></div>
+        <button id="check-button" aria-label="Start checklist">CHECK</button>
+    </div>
+    <div id="checklist-container">
+        <button id="back-button" aria-label="Back to main">Back</button>
+        <button id="reset-button" aria-label="Reset checklist">Reset</button>
+        <div id="checklist-content"></div>
+    </div>
+    <div id="toast"></div>
+
+    <script>
+        // Checklist data
+        const categories = {
+            "Kebutuhan Tempat Tidur": [
+                "Kasur lipat / springbed",
+                "Sprei (2–3 set)",
+                "Sarung bantal & guling (2–3 set)",
+                "Bantal & guling",
+                "Selimut / bed cover"
+            ],
+            "Kebutuhan Kamar Mandi": [
+                "Handuk (2–3 pcs)",
+                "Sabun mandi & tempat sabun",
+                "Shampo & conditioner",
+                "Pasta gigi + sikat gigi",
+                "Sabun muka / skincare",
+                "Ember & gayung"
+            ],
+            "Kebutuhan Pakaian": [
+                "Baju harian",
+                "Baju tidur",
+                "Pakaian kuliah / kerja",
+                "Jaket / sweater",
+                "Pakaian dalam",
+                "Kaos kaki",
+                "Sepatu",
+                "Sandal",
+                "Hanger / gantungan baju"
+            ],
+            "Peralatan Makan dan Minum": [
+                "Piring & mangkok",
+                "Gelas & mug",
+                "Sendok & garpu",
+                "Termos / botol minum",
+                "Sabun cuci piring + spons"
+            ],
+            "Alat Kebersihan & Kebutuhan Kamar": [
+                "Sapu & pengki",
+                "Pel & ember",
+                "Tempat sampah",
+                "Pengharum ruangan",
+                "Kotak P3K"
+            ],
+            "Kebutuhan Dapur Mini": [
+                "Rice cooker mini",
+                "Panci kecil",
+                "Kompor portable",
+                "Bumbu instan",
+                "Snack & mie instan"
+            ],
+            "Perlengkapan Belajar & Elektronik": [
+                "Laptop + charger",
+                "HP + charger + powerbank",
+                "Kabel roll",
+                "Lampu belajar",
+                "Buku catatan & alat tulis",
+                "Tas kuliah"
+            ],
+            "Dokumen & Barang Penting": [
+                "KTP & fotokopinya",
+                "KTM / Kartu pelajar",
+                "Kartu BPJS / asuransi",
+                "Buku rekening & ATM"
+            ],
+            "Kesehatan & Darurat": [
+                "Obat-obatan pribadi",
+                "Obat flu & sakit kepala",
+                "Hansaplast, kapas, betadine",
+                "Masker",
+                "Termometer",
+                "Vitamin"
+            ],
+            "Lain-lain": [
+                "Payung lipat",
+                "Kipas angin mini",
+                "Senter",
+                "Peralatan ibadah",
+                "Koper / tas besar",
+                "Kantong laundry"
+            ]
+        };
+
+        // Dynamic card positions based on screen size
+        const cardPositions = [];
+        const cardCount = Object.keys(categories).length;
+        const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+        for (let i = 0; i < cardCount; i++) {
+            const angle = (i / cardCount) * 2 * Math.PI;
+            cardPositions.push({
+                x: window.innerWidth / 2 + radius * Math.cos(angle) - 60,
+                y: window.innerHeight / 2 + radius * Math.sin(angle) - 40
+            });
+        }
+
+        const checkButton = document.getElementById('check-button');
+        const mainContainer = document.getElementById('main-container');
+        const checklistContainer = document.getElementById('checklist-container');
+        const checklistContent = document.getElementById('checklist-content');
+        const backButton = document.getElementById('back-button');
+        const resetButton = document.getElementById('reset-button');
+        const human = document.getElementById('human');
+        const toast = document.getElementById('toast');
+        let categoryCards = [];
+
+        checkButton.addEventListener('click', () => {
+            human.style.transform = 'translateX(150px)';
+            setTimeout(() => {
+                human.style.display = 'none';
+                document.getElementById('house').style.display = 'none';
+                Object.keys(categories).forEach((category, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'category-card';
+                    card.textContent = category;
+                    card.style.animationDelay = `${Math.random() * 0.3}s`;
+                    card.style.setProperty('--x', `${cardPositions[index].x}px`);
+                    card.style.setProperty('--y', `${cardPositions[index].y}px`);
+                    mainContainer.appendChild(card);
+                    card.addEventListener('click', () => showChecklist(category));
+                    categoryCards.push(card);
+                });
+                checkButton.style.display = 'none';
+                document.querySelector('h1').style.display = 'none';
+            }, 2000);
+        });
+
+        backButton.addEventListener('click', () => {
+            checklistContainer.style.display = 'none';
+            mainContainer.style.display = 'block';
+            document.querySelector('h1').style.display = 'block';
+            checkButton.style.display = 'block';
+            human.style.display = 'block';
+            document.getElementById('house').style.display = 'block';
+            human.style.transform = 'translateX(0)';
+            categoryCards.forEach(card => card.style.display = 'none');
+        });
+
+        resetButton.addEventListener('click', () => {
+            if (confirm('Reset all checklists?')) {
+                Object.keys(categories).forEach(category => {
+                    categories[category].forEach(item => {
+                        localStorage.removeItem(`${category}-${item}`);
+                    });
+                });
+                showChecklist(checklistContent.querySelector('h2').textContent);
+                showToast('Checklist reset!');
+            }
+        });
+
+        function showChecklist(category) {
+            checklistContent.innerHTML = `<h2>${category}</h2>`;
+            categories[category].forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'checklist-item';
+                itemDiv.innerHTML = `
+                    <input type="checkbox" id="${category}-${item}" aria-label="${item}">
+                    <label for="${category}-${item}">${item}</label>
+                `;
+                checklistContent.appendChild(itemDiv);
+
+                const checkbox = itemDiv.querySelector('input');
+                const key = `${category}-${item}`;
+                checkbox.checked = localStorage.getItem(key) === 'true';
+
+                checkbox.addEventListener('change', () => {
+                    localStorage.setItem(key, checkbox.checked);
+                    showToast(`${item} ${checkbox.checked ? 'checked' : 'unchecked'}`);
+                });
+            });
+
+            mainContainer.style.display = 'none';
+            checklistContainer.style.display = 'block';
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+    </script>
+</body>
+</html>
